@@ -1,0 +1,12 @@
+* Repos
+- [[file+emacs:~/repos/vulkan/example1/src][vulkan example 1]]
+
+* Configs
+- [[~/.emacs.d/init.el][emacs]]
+- [[file:~/.config/i3/config][i3]]
+- [[file:~/.config/polybar/config.ini][polybar]]
+- rofi
+  
+* Tasks
+- [ ] Disale this buffer when opening file
+  
