@@ -5,7 +5,7 @@
 - [[~/.emacs.d/init.el][emacs]]
 - [[file:~/.config/i3/config][i3]]
 - [[file:~/.config/polybar/config.ini][polybar]]
-- rofi
+- [[file:~/.config/rofi/][rofi]]
   
 * Tasks
 - [ ] Disale this buffer when opening file

@@ -123,13 +123,17 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Source Code Pro" :foundry "ADBO" :slant normal :weight normal :height 123 :width normal))))
+ '(button ((t (:foreground "#b8bb26" :underline nil :weight semi-bold))))
  '(flycheck-info ((t (:background "background" :underline nil))))
  '(flycheck-note ((t nil)))
  '(flycheck-warning ((t (:background "background" :underline nil))))
+ '(font-lock-preprocessor-face ((t (:foreground "#ebdbb2" :slant normal :weight normal))))
  '(link ((t (:foreground "#d3869b" :underline t :weight bold))))
- '(lsp-face-highlight-textual ((t (:background "background" :foreground "foreground" :weight bold))))
- '(org-level-1 ((t (:inherit outline-1 :extend nil :weight semi-light :height 2.0))))
- '(org-level-2 ((t (:inherit outline-2 :extend nil :height 1.4))))
+ '(lsp-face-highlight-textual ((t (:background "background" :foreground "foreground" :weight semibold))))
+ '(org-checkbox ((t (:inherit all-faces))))
+ '(org-level-1 ((t (:inherit outline-1 :extend nil :foreground "#458588" :weight semi-light :height 1.7))))
+ '(org-level-2 ((t (:inherit outline-2 :extend nil :foreground "#83a598" :weight semi-light :height 1.4))))
+ '(org-level-3 ((t (:inherit outline-3 :extend nil :foreground "#83a598"))))
  '(org-link ((t (:inherit link :foreground "#458588" :underline nil)))))
 
 ;; Custom )
@@ -222,8 +226,7 @@
   (define-key ivy-minibuffer-map (kbd "<escape>") 'minibuffer-keyboard-quit))
 
 (setq ivy-re-builders-alist
-      '((t . ivy--regex-plus)))
-      ;;'((t . regexp-quote)))
+      '((t . regexp-quote)))
 
 (global-set-key "\C-s" 'swiper)
 
@@ -310,10 +313,9 @@
 
 (use-package lsp-ui 
   :commands lsp-ui-mode
-  :hook(c++-mode . lsp-ui-doc-frame-mode)
   :config 
   (setq lsp-ui-doc-show-with-cursor t)
-  (setq lsp-ui-doc-delay 0)
+  (setq lsp-ui-doc-delay 1)
   (setq lsp-headerline-breadcrumb-enable nil)
   (setq lsp-signature-doc-lines 1)
   (setq lsp-ui-doc-max-width 100)
