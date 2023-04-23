@@ -253,6 +253,7 @@
   (org-indent-mode 1)
   (my_org-font-setup)
   (display-line-numbers-mode 0)
+  (text-scale-increase 2.2)
   ) 
 
 (defun my_org-font-setup ()
@@ -278,6 +279,7 @@
                              (push '("[-]" . "" ) prettify-symbols-alist)
                              (prettify-symbols-mode))))
 
+
 (use-package org-bullets
   :after org
   :hook (org-mode . org-bullets-mode)
@@ -285,7 +287,7 @@
   (org-bullets-bullet-list '("" "" "" "" "" "" "")))
 
 (defun efs/org-mode-visual-fill ()
-  (setq visual-fill-column-width 150
+  (setq visual-fill-column-width 75
         visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
 
