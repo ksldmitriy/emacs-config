@@ -55,6 +55,7 @@
 
 
 (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode)
+(add-hook 'c++-mode-hook 'display-line-numbers-mode)
 
 (setq font-lock-maximum-decoration t)
 
@@ -99,7 +100,6 @@
 ;; (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
 ;; (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
 
-(display-line-numbers-mode t)
 ;; ( Custom
 
 (custom-set-variables
@@ -112,8 +112,9 @@
    '("a589c43f8dd8761075a2d6b8d069fc985660e731ae26f6eddef7068fece8a414" "6945dadc749ac5cbd47012cad836f92aea9ebec9f504d32fe89a956260773ca4" "7a424478cb77a96af2c0f50cfb4e2a88647b3ccca225f8c650ed45b7f50d9525" "e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "467dc6fdebcf92f4d3e2a2016145ba15841987c71fbe675dcfe34ac47ffb9195" "4ff1c4d05adad3de88da16bd2e857f8374f26f9063b2d77d38d14686e3868d8d" "fa49766f2acb82e0097e7512ae4a1d6f4af4d6f4655a48170d0a00bcb7183970" "b1a691bb67bd8bd85b76998caf2386c9a7b2ac98a116534071364ed6489b695d" "d80952c58cf1b06d936b1392c38230b74ae1a2a6729594770762dc0779ac66b7" "72ed8b6bffe0bfa8d097810649fd57d2b598deef47c992920aef8b5d9599eefe" "2ff9ac386eac4dffd77a33e93b0c8236bb376c5a5df62e36d4bfa821d56e4e20" "19a2c0b92a6aa1580f1be2deb7b8a8e3a4857b6c6ccf522d00547878837267e7" default))
  '(highlight-indent-guides-method 'bitmap)
  '(ivy-initial-inputs-alist nil)
+ '(org-startup-folded 'show3levels)
  '(package-selected-packages
-   '(lsp-origami lsp-ivy lsp-ui lsp-mode visual-fill-column org-bullets doom-themes highlight-indentation highlight-indent-guides ivy-rich which-key whick-key rainbow-delimiters ranbow-delimiters all-the-icons doom-modeline ivy--actions-list ivy beacon no-littering rainbow-mode cl-format yafolding vdiff markdown-mode golden-ratio-scroll-screen origami latex-preview-pane clang-format yasnippet-snippets use-package undo-fu rtags move-text modern-cpp-font-lock gruvbox-theme ggtags flycheck-color-mode-line evil-collection company cmake-ide)))
+   '(browse-kill-ring lsp-origami lsp-ivy lsp-ui lsp-mode visual-fill-column org-bullets doom-themes highlight-indentation highlight-indent-guides ivy-rich which-key whick-key rainbow-delimiters ranbow-delimiters all-the-icons doom-modeline ivy--actions-list ivy beacon no-littering rainbow-mode cl-format yafolding vdiff markdown-mode golden-ratio-scroll-screen origami latex-preview-pane clang-format yasnippet-snippets use-package undo-fu rtags move-text modern-cpp-font-lock gruvbox-theme ggtags flycheck-color-mode-line evil-collection company cmake-ide)))
 
 (setq custom--inhibit-theme-enable nil)
 
@@ -128,6 +129,8 @@
  '(flycheck-note ((t nil)))
  '(flycheck-warning ((t (:background "background" :underline nil))))
  '(font-lock-preprocessor-face ((t (:foreground "#ebdbb2" :slant normal :weight normal))))
+ '(line-number ((t (:inherit default :foreground "#7c6f64" :slant normal :weight normal))))
+ '(line-number-current-line ((t (:inherit (hl-line default) :background "#3c3836" :foreground "#fabd2f" :slant normal :weight normal))))
  '(link ((t (:foreground "#d3869b" :underline t :weight bold))))
  '(lsp-face-highlight-textual ((t (:background "background" :foreground "foreground" :weight semibold))))
  '(org-checkbox ((t (:inherit all-faces))))
@@ -162,7 +165,7 @@
 (setq company-tooltip-align-annotations t)
 
 (defun window-half-height ()
-  (max 1 (/ (1- (window-height (selected-window))) 2)))
+  (max 1 (/ (1- (window-height (selected-window))) 3)))
 
 (defun scroll-up-half ()
   (interactive)
@@ -216,7 +219,7 @@
     (define-key map (kbd "C-k") 'ivy-previous-line-or-history))
   
   (define-key ivy-switch-buffer-map (kbd "C-M-K") 'ivy-switch-buffer-kill)
-
+  
   (define-key ivy-minibuffer-map (kbd "C-h") (kbd "DEL"))
   ;; Move C-h to C-S-h
   (define-key ivy-minibuffer-map (kbd "M-k") 'ivy-previous-history-element)
@@ -248,6 +251,7 @@
   :ensure t)
 
 (setq create-lockfiles nil)
+(setq make-backup-files nil)
 
 ;; org mode
 
@@ -255,7 +259,7 @@
   (visual-line-mode 1)
   (org-indent-mode 1)
   (my_org-font-setup)
-  (display-line-numbers-mode 0)
+  (display-line-numbers-mode -1)
   (text-scale-increase 2.2)
   ) 
 
@@ -306,9 +310,11 @@
   (setq lsp-keymap-prefix "C-c l")
   :config
   (setq company-lsp-enable-snippet nil)
-  :hook (
-         (c++-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
+  (setq lsp-enable-snippet nil)
+  (setq lsp-completion-enable-additional-text-edit nil)
+  :hook 
+  (c++-mode . lsp)
+  (lsp-mode . lsp-enable-which-key-integration)
   )
 
 (use-package lsp-ui 
@@ -319,13 +325,13 @@
   (setq lsp-headerline-breadcrumb-enable nil)
   (setq lsp-signature-doc-lines 1)
   (setq lsp-ui-doc-max-width 100)
-)
+  )
 
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 
 (use-package which-key
-    :config
-    (which-key-mode))
+  :config
+  (which-key-mode))
 
 
 ;; lsp )
@@ -335,3 +341,10 @@
 (setq tab-bar-close-button-show nil)       ;; hide tab close / X button
 (setq tab-bar-tab-hints t)                 ;; show tab numbers
 (setq tab-bar-format '(tab-bar-format-tabs separator))
+
+(use-package browse-kill-ring
+  :ensure t
+  :bind (
+         ("C-c p" . browse-kill-ring)
+         )
+  )

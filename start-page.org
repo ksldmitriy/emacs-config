@@ -1,5 +1,6 @@
 * Repos
 - [[file+emacs:~/repos/vulkan/example1/src][vulkan example 1]]
+- [[file:~/repos/asd][asd]]
 
 * Configs
 - [[~/.emacs.d/init.el][emacs]]
