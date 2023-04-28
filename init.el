@@ -125,6 +125,7 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Source Code Pro" :foundry "ADBO" :slant normal :weight normal :height 123 :width normal))))
  '(button ((t (:foreground "#b8bb26" :underline nil :weight semi-bold))))
+ '(flycheck-error ((t (:inherit nil :background "background" :underline (:color "#fb4934" :style wave)))))
  '(flycheck-info ((t (:background "background" :underline nil))))
  '(flycheck-note ((t nil)))
  '(flycheck-warning ((t (:background "background" :underline nil))))
