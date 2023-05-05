@@ -114,7 +114,7 @@
  '(ivy-initial-inputs-alist nil)
  '(org-startup-folded 'show3levels)
  '(package-selected-packages
-   '(browse-kill-ring lsp-origami lsp-ivy lsp-ui lsp-mode visual-fill-column org-bullets doom-themes highlight-indentation highlight-indent-guides ivy-rich which-key whick-key rainbow-delimiters ranbow-delimiters all-the-icons doom-modeline ivy--actions-list ivy beacon no-littering rainbow-mode cl-format yafolding vdiff markdown-mode golden-ratio-scroll-screen origami latex-preview-pane clang-format yasnippet-snippets use-package undo-fu rtags move-text modern-cpp-font-lock gruvbox-theme ggtags flycheck-color-mode-line evil-collection company cmake-ide)))
+   '(dap-mode browse-kill-ring lsp-origami lsp-ivy lsp-ui lsp-mode visual-fill-column org-bullets doom-themes highlight-indentation highlight-indent-guides ivy-rich which-key whick-key rainbow-delimiters ranbow-delimiters all-the-icons doom-modeline ivy--actions-list ivy beacon no-littering rainbow-mode cl-format yafolding vdiff markdown-mode golden-ratio-scroll-screen origami latex-preview-pane clang-format yasnippet-snippets use-package undo-fu rtags move-text modern-cpp-font-lock gruvbox-theme ggtags flycheck-color-mode-line evil-collection company cmake-ide)))
 
 (setq custom--inhibit-theme-enable nil)
 
@@ -125,7 +125,7 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Source Code Pro" :foundry "ADBO" :slant normal :weight normal :height 123 :width normal))))
  '(button ((t (:foreground "#b8bb26" :underline nil :weight semi-bold))))
- '(flycheck-error ((t (:inherit nil :background "background" :underline (:color "#fb4934" :style wave)))))
+ '(flycheck-error ((t (:underline (:color "#fb4934" :style wave)))))
  '(flycheck-info ((t (:background "background" :underline nil))))
  '(flycheck-note ((t nil)))
  '(flycheck-warning ((t (:background "background" :underline nil))))
@@ -234,7 +234,11 @@
 
 (global-set-key "\C-s" 'swiper)
 
-(use-package all-the-icons)
+(use-package all-the-icons
+  :ensure t
+  :config
+  (all-the-icons-install-fonts t)
+  )
 
 (use-package doom-modeline
   :ensure t
@@ -349,3 +353,40 @@
          ("C-c p" . browse-kill-ring)
          )
   )
+
+
+(use-package dap-mode
+  :defer
+  :custom
+  (dap-auto-configure-mode t                           "Automatically configure dap.")
+  (dap-auto-configure-features
+   '(sessions locals breakpoints expressions tooltip)  "Remove the button panel in the top.")
+  :config
+  ;;; dap for c++
+  (require 'dap-lldb)
+  (require 'dap-cpptools)
+  (require 'dap-gdb-lldb)
+
+  ;;; set the debugger executable (c++)
+  (setq dap-lldb-debug-program '("/usr/bin/lldb-vscode"))
+  
+  ;;; ask user for executable to debug if not specified explicitly (c++)
+  (setq dap-lldb-debugged-program-function (lambda () (read-file-name "Select file to debug.")))
+  
+  ;;; default debug template for (c++)
+  (dap-register-debug-template
+   "C++ LLDB dap"
+   (list :type "lldb-vscode"
+         :cwd nil
+         :args nil
+         :request "launch"
+         :program nil))
+  
+  (defun dap-debug-create-or-edit-json-template ()
+    "Edit the C++ debugging configuration or create + edit if none exists yet."
+    (interactive)
+    (let ((filename (concat (lsp-workspace-root) "/launch.json"))
+	      (default "~/.emacs.d/default-dap-launch.json"))
+      (unless (file-exists-p filename)
+	    (copy-file default filename))
+      (find-file-existing filename))))
