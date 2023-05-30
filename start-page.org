@@ -1,14 +1,16 @@
 * Repos
-- [[file+emacs:~/repos/vulkan/example1/src][vulkan example 1]]
-- [[file:~/repos/asd][asd]]
-- [[file:~/repos/oop/][oop]]
+ - [[file:~/repos/vulkan/course_work/src/][course work]]
+ - [[file+emacs:~/repos/vulkan/example1/src][vulkan example 1]]
+ - [[file:~/repos/asd][asd]]
+ - [[file:~/repos/oop/][oop]]
 
 * Configs
-- [[~/.emacs.d/init.el][emacs]]
-- [[file:~/.config/i3/config][i3]]
-- [[file:~/.config/polybar/config.ini][polybar]]
-- [[file:~/.config/rofi/][rofi]]
+ - [[~/.emacs.d/init.el][emacs]]
+ - [[file:~/.config/i3/config][i3]]
+ - [[file:~/.config/polybar/config.ini][polybar]]
+ - [[file:~/.config/rofi/][rofi]]
+ - alacritty
   
 * Tasks
-- [ ] Disale this buffer when opening file
+ - [ ] Disale this buffer when opening file
   
