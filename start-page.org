@@ -1,4 +1,6 @@
 * Repos
+ - [[file:~/repos/stonks/src/][stonks]]
+ - [[file:~/repos/working-thread/src][working-thread]]
  - [[file:~/repos/vulkan/course_work/src/][course work]]
  - [[file+emacs:~/repos/vulkan/example1/src][vulkan example 1]]
  - [[file:~/repos/asd][asd]]
