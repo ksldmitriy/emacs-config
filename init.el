@@ -29,13 +29,24 @@
   (setq evil-want-keybinding nil)
   (setq evil-undo-system 'undo-fu)
   :config
-  (evil-mode 1))
+  (evil-collection-init)
+  (evil-mode 1)
+  (define-key evil-normal-state-map "t" 
+			  (lambda (arg) (interactive "P")
+                (if arg
+                    (tab-bar-select-tab arg)
+                  (tab-next))
+                ))
+  (define-key evil-normal-state-map "T" 'tab-previous)
+  )
 
 (use-package evil-collection
   :after evil
   :config
   (setq evil-want-integration t)
-  (evil-collection-init))
+  (define-key evil-motion-state-map "t" nil)
+  )
+
 
 (use-package gruvbox-theme
   :config
@@ -367,10 +378,10 @@
 
 ;;   ;;; set the debugger executable (c++)
 ;;   (setq dap-lldb-debug-program '("/usr/bin/lldb-vscode"))
-  
+
 ;;   ;;; ask user for executable to debug if not specified explicitly (c++)
 ;;   (setq dap-lldb-debugged-program-function (lambda () (read-file-name "Select file to debug.")))
-  
+
 ;;   ;;; default debug template for (c++)
 ;;   (dap-register-debug-template
 ;;    "C++ LLDB dap"
@@ -379,7 +390,7 @@
 ;;          :args nil
 ;;          :request "launch"
 ;;          :program nil))
-  
+
 ;;   (defun dap-debug-create-or-edit-json-template ()
 ;;     "Edit the C++ debugging configuration or create + edit if none exists yet."
 ;;     (interactive)
@@ -394,22 +405,22 @@
 
 (use-package dap-mode
   :defer
-
+  
   :custom
   (dap-auto-configure-mode t                           "Automatically configure dap.")
   (dap-auto-configure-features
    '(sessions locals breakpoints expressions tooltip)  "Remove the button panel in the top.")
-
+  
   :config
   ;;; dap for c++
   (require 'dap-lldb)
   (require 'dap-cpptools)
   (require 'dap-gdb-lldb)
-
+  
   ;;; ask user for executable to debug if not specified explicitly (c++)
   (setq dap-lldb-debugged-program-function (lambda () (read-file-name "Select file to debug.")))
   
-
+  
   :init
   (bind-keys :map dap-mode-map
              :prefix "M-d"
@@ -430,7 +441,7 @@
 			 ("s d" . dap-down-stack-frame)
 			 ("s s" . dap-switch-stack-frame)
 			 ("l" . dap-ui-locals)
-))
+             ))
 
 ;; tabs
 
