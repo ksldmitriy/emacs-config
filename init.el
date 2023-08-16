@@ -24,29 +24,37 @@
 
 (use-package evil
   :demand t
-  :bind (("<escape>" . keyboard-escape-quit))
+  :bind ((:map evil-motion-state-map
+               ("g t" . nil)
+               ("g T" . nil))
+         (:map evil-normal-state-map 
+               ("t" . (lambda (arg) (interactive "P")
+                        (if arg
+                            (tab-bar-select-tab arg)
+                          (tab-next))
+                        ))
+               ("T" . 'tab-previous))
+         ("<escape>" . keyboard-quit))
+  
   :init
   (setq evil-want-keybinding nil)
   (setq evil-undo-system 'undo-fu)
+  
   :config
   (evil-collection-init)
   (evil-mode 1)
-  (define-key evil-normal-state-map "t" 
-			  (lambda (arg) (interactive "P")
-                (if arg
-                    (tab-bar-select-tab arg)
-                  (tab-next))
-                ))
-  (define-key evil-normal-state-map "T" 'tab-previous)
+  
   )
 
 (use-package evil-collection
   :after evil
   :config
   (setq evil-want-integration t)
-  (define-key evil-motion-state-map "t" nil)
-  )
 
+  (define-key evil-normal-state-map "ESC" nil)
+  (define-key evil-motion-state-map "g t" nil)
+  (define-key evil-motion-state-map "g T" nil)
+)
 
 (use-package gruvbox-theme
   :config
@@ -128,7 +136,7 @@
  '(menu-bar-mode nil)
  '(org-startup-folded 'show3levels)
  '(package-selected-packages
-   '(nerd-icons-ibuffer jit-spell spell-fu programmer-dvorak dap-mode browse-kill-ring lsp-origami lsp-ivy lsp-ui lsp-mode visual-fill-column org-bullets doom-themes highlight-indentation highlight-indent-guides ivy-rich which-key whick-key rainbow-delimiters ranbow-delimiters all-the-icons doom-modeline ivy--actions-list ivy beacon no-littering rainbow-mode cl-format yafolding vdiff markdown-mode golden-ratio-scroll-screen origami latex-preview-pane clang-format yasnippet-snippets use-package undo-fu rtags move-text modern-cpp-font-lock gruvbox-theme ggtags flycheck-color-mode-line evil-collection company cmake-ide))
+   '(typescript-mode nerd-icons-ibuffer jit-spell spell-fu programmer-dvorak dap-mode browse-kill-ring lsp-origami lsp-ivy lsp-ui lsp-mode visual-fill-column org-bullets doom-themes highlight-indentation highlight-indent-guides ivy-rich which-key whick-key rainbow-delimiters ranbow-delimiters all-the-icons doom-modeline ivy--actions-list ivy beacon no-littering rainbow-mode cl-format yafolding vdiff markdown-mode golden-ratio-scroll-screen origami latex-preview-pane clang-format yasnippet-snippets use-package undo-fu rtags move-text modern-cpp-font-lock gruvbox-theme ggtags flycheck-color-mode-line evil-collection company cmake-ide))
  '(tab-bar-mode t)
  '(tool-bar-mode nil))
 
@@ -314,6 +322,7 @@
   :hook (org-mode . efs/org-mode-visual-fill))
 
 (setq initial-buffer-choice "~/.emacs.d/start-page.org")
+(global-set-key (kbd "C-c s") (lambda () (interactive) (switch-to-buffer (find-file-noselect initial-buffer-choice))))
 
 ;; ( lsp
 (use-package lsp-mode
@@ -454,3 +463,6 @@
 (global-set-key (kbd "C-c C-c p") 'clipboard-yank)
 (global-set-key (kbd "C-c C-c y") 'clipboard-kill-ring-save)
 (global-set-key (kbd "C-c C-c d") 'clipboard-kill-region)
+
+(global-unset-key (kbd "ESC ESC ESC"))
+(define-key key-translation-map (kbd "ESC") (kbd "C-g"))
