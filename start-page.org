@@ -1,4 +1,14 @@
 * Repos
+** Dreams
+*** Android
+- [[file:~/repos/dreams/android/test/][test]]
+** General 
+ - [[file:~/repos/circles][fucking circles]]
+ - [[file:~/repos/bg-vim/][bg vim]]
+ - [[file:~/repos/my-st][my st]]
+ - [[file:~/repos/png-edit/][png edit]]
+ - [[file:~/repos/pty-test][pty test]]
+ - [[file:~/repos/cool-bg/src][cool bg]]
  - [[file:~/repos/stonks/src/][stonks]]
  - [[file:~/repos/working-thread/src][working-thread]]
  - [[file:~/repos/vulkan/course_work/src/][course work]]
