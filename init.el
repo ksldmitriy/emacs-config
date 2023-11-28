@@ -115,7 +115,7 @@
  '(menu-bar-mode nil)
  '(org-startup-folded 'show3levels)
  '(package-selected-packages
-   '(chatgpt-shell auto-complete-nxml nxml-uxml project-treemacs treemacs-tab-bar cmake-mode yaml-mode company-glsl glsl-mode :init visual-regexp-steroids visual-regexp typescript-mode nerd-icons-ibuffer jit-spell spell-fu programmer-dvorak dap-mode browse-kill-ring lsp-origami lsp-ivy lsp-ui lsp-mode visual-fill-column org-bullets doom-themes highlight-indentation highlight-indent-guides ivy-rich which-key whick-key rainbow-delimiters ranbow-delimiters all-the-icons doom-modeline ivy--actions-list ivy beacon no-littering rainbow-mode cl-format yafolding vdiff markdown-mode golden-ratio-scroll-screen origami latex-preview-pane clang-format yasnippet-snippets use-package undo-fu move-text modern-cpp-font-lock gruvbox-theme ggtags flycheck-color-mode-line evil-collection company cmake-ide))
+   '(Cmake-mode yaml-mode company-glsl glsl-mode :init visual-regexp-steroids visual-regexp typescript-mode nerd-icons-ibuffer jit-spell spell-fu programmer-dvorak dap-mode browse-kill-ring lsp-origami lsp-ivy lsp-ui lsp-mode visual-fill-column org-bullets doom-themes highlight-indentation highlight-indent-guides ivy-rich which-key whick-key rainbow-delimiters ranbow-delimiters all-the-icons doom-modeline ivy--actions-list ivy beacon no-littering rainbow-mode cl-format yafolding vdiff markdown-mode golden-ratio-scroll-screen origami latex-preview-pane clang-format yasnippet-snippets use-package undo-fu move-text modern-cpp-font-lock gruvbox-theme ggtags flycheck-color-mode-line evil-collection company cmake-ide))
  '(tab-bar-mode t)
  '(tool-bar-mode nil))
 
