@@ -1,18 +1,30 @@
-* Repos
-** General 
- - [[file:~/repos/asd/2][asd]]
- - [[file:~/repos/dashenka/asd/asd/][dasha]]
- - [[file:~/repos/slavik][slavik]]
+* Code
+- [[file:~/repos/asd/2][asd]]
+- [[file:~/repos/dashenka/asd/asd/][dasha]]
+- [[file:~/repos/slavik][slavik]]
+- [[file:~/repos/lhb-shot/][lhb shot]] 
+- [[file:~/repos/dyn-link/][dyn link]]
+- [[file:~/repos/test/][test]]
+   
+* /Flex/
+- [[file:~/Documents/latina/][latin]]
+- [[file:~/repos/flex/][flex cpp]]
+   
+* Tasks
+- [ ] snake case life-hack: redefine shift+space to be the underscore
+- [ ] turbowarp to c++ (Scratch to c++) and run linux on it
+- [ ] learn ed text editor
+- [ ] sincos function and benchmark
+- [ ] desktop background with lofi image and 3d rain animation
+- [ ] compiler for [[https://github.com/TodePond/DreamBerd---e-acc][DreamBerd]] lang 
+- [ ] punched cards
+- [ ] kinetic magnets in tube
+- [ ] acoustic camera
+
 * Configs
  - [[~/.emacs.d/init.el][emacs]]
  - [[file:~/.config/i3/config][i3]]
  - [[file:~/.config/polybar/config.ini][polybar]]
  - [[file:~/.config/rofi/][rofi]]
- - alacritty
-  
-* Tasks
-** Disale this buffer when opening file
-** turbowarp to c++ (Scratch to c++)
-** punched cards
-  
-   
+ - [[file:~/.config/alacritty/alacritty.toml][alacritty]]
+ 

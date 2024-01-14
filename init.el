@@ -47,19 +47,31 @@
   ("J" . 'tab-previous)
   ("K" . 'tab-next)
   ("/" . 'swiper)
+  ("C-f" . 'clang-format-buffer)
+  ("," . nil)
+  (", f" . 'clang-format-buffer)
 
   :map
   evil-normal-state-map
-  ("t" .
-   (lambda (arg)
-     (interactive "P")
-     (if arg
-         (tab-bar-select-tab arg)
-       (tab-next))))
-  ("T" . 'tab-previous)
+  ("i" .
+   (lambda ()
+     (interactive)
+     (evil-insert 1)))
+  ("I" .
+   (lambda ()
+     (interactive)
+     (evil-insert-line 1)))
+  ("a" .
+   (lambda ()
+     (interactive)
+     (evil-append 1)))
+  ("A" .
+   (lambda ()
+     (interactive)
+     (evil-append-line 1)))
   ("J" . 'tab-previous)
-  ("s" . 'save-all-buffers)
-  ("K" . 'tab-next))
+  ("K" . 'tab-next)
+  ("s" . 'save-all-buffers))
 
 
  :init
@@ -86,7 +98,7 @@
 (autoload 'View-scroll-half-page-backward "view")
 
 (require 'clang-format)
-(global-set-key (kbd "C-c f") 'clang-format-buffer)
+;;(global-set-key (kbd ", f") 'clang-format-buffer)
 
 (setq clang-format-style-option "llvm")
 
@@ -216,11 +228,17 @@
  '(extended-command-suggest-shorter nil)
  '(highlight-indent-guides-method 'bitmap)
  '(ivy-initial-inputs-alist nil)
+ '(ivy-posframe-border-width 2)
  '(lsp-enable-suggest-server-download nil)
  '(menu-bar-mode nil)
- '(org-startup-folded 'show3levels)
+ '(org-startup-folded nil)
  '(package-selected-packages
-   '(twilight-anti-bright-theme
+   '(flycheck-rust
+     rust-mode
+     ivy-posframe-mode
+     ivy-posframe
+     command-log-mode
+     twilight-anti-bright-theme
      twilight-theme
      spacemacs-theme
      Cmake-mode
@@ -286,7 +304,16 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(button ((t (:inherit link :underline nil))))
- '(flycheck-note ((t nil))))
+ '(flycheck-note ((t nil)))
+ '(ivy-posframe-border ((t (:background "#41728e"))))
+ '(org-link
+   ((t
+     (:inherit
+      link
+      :foreground "#81a2be"
+      :underline nil
+      :slant italic
+      :weight semi-bold)))))
 
 ;; Custom )
 
@@ -680,5 +707,15 @@
 (setq suggest-key-bindings nil)
 (setq extended-command-suggest-shorter nil)
 
-(defun save-all-buffers () (interactive) (save-some-buffers t))
+(defun save-all-buffers ()
+  (interactive)
+  (save-some-buffers t))
 (global-set-key (kbd "M-s") 'save-all-buffers)
+
+(use-package
+ ivy-posframe
+ :config (ivy-posframe-mode 1)
+ (setq ivy-posframe-display-functions-alist
+       '((swiper . ivy-display-function-fallback)
+         (counsel-M-x . ivy-posframe-display-at-window-bottom-left)
+         (t . ivy-posframe-display))))
