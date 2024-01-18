@@ -13,13 +13,17 @@
 
 (package-initialize)
 (setq use-package-always-ensure t)
+
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
 (eval-when-compile
   (require 'use-package))
 
 (setq use-package-always-ensure t)
+
+(use-package no-littering)
 
 (global-set-key
  (kbd "C-x e")
@@ -28,67 +32,16 @@
    (save-buffer)
    (eval-buffer nil nil nil nil t)))
 
-(use-package no-littering)
-
 (use-package undo-fu)
 
 (global-set-key (kbd "M-d") nil)
 
-(use-package
- evil
- :demand t
- :bind
- (("<escape>" . keyboard-quit)
+(defun load-config (filename)
+  (load
+   (expand-file-name (concat (concat "config/" filename) ".el")
+                     user-emacs-directory)))
 
-  :map
-  evil-motion-state-map
-  ("g t" . nil)
-  ("g T" . nil)
-  ("J" . 'tab-previous)
-  ("K" . 'tab-next)
-  ("/" . 'swiper)
-  ("C-f" . 'clang-format-buffer)
-  ("," . nil)
-  (", f" . 'clang-format-buffer)
-
-  :map
-  evil-normal-state-map
-  ("i" .
-   (lambda ()
-     (interactive)
-     (evil-insert 1)))
-  ("I" .
-   (lambda ()
-     (interactive)
-     (evil-insert-line 1)))
-  ("a" .
-   (lambda ()
-     (interactive)
-     (evil-append 1)))
-  ("A" .
-   (lambda ()
-     (interactive)
-     (evil-append-line 1)))
-  ("J" . 'tab-previous)
-  ("K" . 'tab-next)
-  ("s" . 'save-all-buffers))
-
-
- :init
- (setq evil-want-keybinding nil)
- (setq evil-undo-system 'undo-fu)
-
- :config
- (evil-collection-init)
- (evil-mode 1))
-
-(use-package
- evil-collection
- :after evil
- :config
- (setq evil-want-integration t)
- (define-key evil-motion-state-map "g t" nil)
- (define-key evil-motion-state-map "g T" nil))
+(load-config "evil")
 
 (setq-default cursor-type 'bar)
 (setq indent-tabs-mode nil)
@@ -554,14 +507,11 @@
   "Remove the button panel in the top.")
 
  :config
- ;;; dap for c++
  (require 'dap-lldb) (require 'dap-cpptools) (require 'dap-gdb-lldb)
 
  ;;; ask user for executable to debug if not specified explicitly (c++)
  (setq dap-lldb-debugged-program-function
        (lambda () (read-file-name "Select file to debug.")))
-
-
  :init
  (bind-keys
   :map dap-mode-map
@@ -719,3 +669,5 @@
        '((swiper . ivy-display-function-fallback)
          (counsel-M-x . ivy-posframe-display-at-window-bottom-left)
          (t . ivy-posframe-display))))
+
+(load-config "auto-format-buffer")

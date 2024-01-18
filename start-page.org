@@ -20,11 +20,23 @@
 - [ ] punched cards
 - [ ] kinetic magnets in tube
 - [ ] acoustic camera
+- [ ] free flow game solver
 
+* Emacs goods
+- learn ivy!!! (f1-m in C-x C-f)
+- solair
+- golden-ratio
+- auto-insert-(mode)
+- glasses-mode camelCase to normal
+- balance-windows
+- repeat-mode
+- dired learn and customize
+- config as org
+- markers and tags
+  
 * Configs
  - [[~/.emacs.d/init.el][emacs]]
  - [[file:~/.config/i3/config][i3]]
  - [[file:~/.config/polybar/config.ini][polybar]]
  - [[file:~/.config/rofi/][rofi]]
  - [[file:~/.config/alacritty/alacritty.toml][alacritty]]
- 
