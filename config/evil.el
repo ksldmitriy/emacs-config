@@ -1,5 +1,11 @@
 (require 'use-package)
 
+(defun evil-keyboard-quit ()
+  "Keyboard quit and force normal state."
+  (interactive)
+  (and evil-mode (evil-force-normal-state))
+  (keyboard-quit))
+
 (use-package
  evil
  :demand t
@@ -36,8 +42,14 @@
      (evil-append-line 1)))
   ("J" . 'tab-previous)
   ("K" . 'tab-next)
-  ("s" . 'save-all-buffers))
+  ("s" . 'save-all-buffers)
 
+  :map
+  evil-insert-state-map
+  ("C-SPC" . "_")
+  ("C-g" . 'evil-keyboard-quit)
+  ("C-f" . 'evil-keyboard-quit)
+  ("C-j" . 'evil-keyboard-quit))
 
  :init
  (setq evil-want-keybinding nil)
