@@ -1,16 +1,35 @@
 * Code
-- [[file:~/repos/asd/2][asd]]
-- [[file:~/repos/dashenka/asd/asd/][dasha]]
-- [[file:~/repos/slavik][slavik]]
+- work
+  - [[file:~/repos/work/lofi-rain/][lofi rain]]
+  - [[file:~/repos/work/data-structures/][data structures]]
+  - [[file:~/repos/work/leet-code/][leet code]]
 - [[file:~/repos/lhb-shot/][lhb shot]] 
 - [[file:~/repos/dyn-link/][dyn link]]
 - [[file:~/repos/test/][test]]
+- [[file:~/repos/python/][python]]
    
 * /Flex/
 - [[file:~/Documents/latina/][latin]]
 - [[file:~/repos/flex/][flex cpp]]
    
+* Emacs goods
+- learn ivy!!! (f1-m in C-x C-f)
+- solair
+- golden-ratio
+- auto-insert-(mode)
+- glasses-mode camelCase to normal
+- balance-windows
+- repeat-mode
+- dired learn and customize
+- config as org
+- markers and tags
+  
 * Tasks
+- [ ] ~FIND FUCKING WORK LAZY PIECE OF SHIT!!!~ [[file:~/Documents/work.org][tasks]]
+- [ ] userver
+- [ ] return money for education to parents
+- [ ] buy brown craft paper (numberphile) https://bru.store/eko-kraft-bumaga-a3-70-upakovka-500
+- [ ] spinning artwork (rotating circle piece of paper)
 - [ ] snake case life-hack: redefine shift+space to be the underscore
 - [ ] turbowarp to c++ (Scratch to c++) and run linux on it
 - [ ] learn ed text editor
@@ -20,11 +39,16 @@
 - [ ] punched cards
 - [ ] kinetic magnets in tube
 - [ ] acoustic camera
-
+- [ ] free flow game solver
+- [ ] snake AI AlphaPhoenix
+- [ ] by the filth of frank book
+- [ ] terminal:
+  - [ ] fc
+  - [ ] gpu parallel
+  
 * Configs
  - [[~/.emacs.d/init.el][emacs]]
  - [[file:~/.config/i3/config][i3]]
  - [[file:~/.config/polybar/config.ini][polybar]]
  - [[file:~/.config/rofi/][rofi]]
  - [[file:~/.config/alacritty/alacritty.toml][alacritty]]
- 

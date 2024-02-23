@@ -13,82 +13,47 @@
 
 (package-initialize)
 (setq use-package-always-ensure t)
+
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
 (eval-when-compile
   (require 'use-package))
 
 (setq use-package-always-ensure t)
+
+(use-package no-littering)
+
+(defun clear-messages-buffer ()
+  (interactive)
+  (with-current-buffer "*Messages*"
+    (read-only-mode -1)
+    (erase-buffer)
+    (read-only-mode 1)))
+
 
 (global-set-key
  (kbd "C-x e")
  (lambda ()
    (interactive)
    (save-buffer)
-   (eval-buffer nil nil nil nil t)))
-
-(use-package no-littering)
+   (if (region-active-p)
+       (let ((start (region-beginning))
+             (end (region-end)))
+         (eval-region start end))
+     (eval-buffer nil nil nil nil t))))
 
 (use-package undo-fu)
 
 (global-set-key (kbd "M-d") nil)
 
-(use-package
- evil
- :demand t
- :bind
- (("<escape>" . keyboard-quit)
+(defun load-config (filename)
+  (load
+   (expand-file-name (concat (concat "config/" filename) ".el")
+                     user-emacs-directory)))
 
-  :map
-  evil-motion-state-map
-  ("g t" . nil)
-  ("g T" . nil)
-  ("J" . 'tab-previous)
-  ("K" . 'tab-next)
-  ("/" . 'swiper)
-  ("C-f" . 'clang-format-buffer)
-  ("," . nil)
-  (", f" . 'clang-format-buffer)
-
-  :map
-  evil-normal-state-map
-  ("i" .
-   (lambda ()
-     (interactive)
-     (evil-insert 1)))
-  ("I" .
-   (lambda ()
-     (interactive)
-     (evil-insert-line 1)))
-  ("a" .
-   (lambda ()
-     (interactive)
-     (evil-append 1)))
-  ("A" .
-   (lambda ()
-     (interactive)
-     (evil-append-line 1)))
-  ("J" . 'tab-previous)
-  ("K" . 'tab-next)
-  ("s" . 'save-all-buffers))
-
-
- :init
- (setq evil-want-keybinding nil)
- (setq evil-undo-system 'undo-fu)
-
- :config
- (evil-collection-init)
- (evil-mode 1))
-
-(use-package
- evil-collection
- :after evil
- :config
- (setq evil-want-integration t)
- (define-key evil-motion-state-map "g t" nil)
- (define-key evil-motion-state-map "g T" nil))
+(load-config "evil")
 
 (setq-default cursor-type 'bar)
 (setq indent-tabs-mode nil)
@@ -233,7 +198,10 @@
  '(menu-bar-mode nil)
  '(org-startup-folded nil)
  '(package-selected-packages
-   '(flycheck-rust
+   '(vterm
+     js-format
+     xml-format
+     flycheck-rust
      rust-mode
      ivy-posframe-mode
      ivy-posframe
@@ -303,6 +271,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default
+   ((t
+     (:family
+      "Source Code Pro"
+      :foundry "ADBO"
+      :slant normal
+      :weight medium
+      :height 105
+      :width normal))))
  '(button ((t (:inherit link :underline nil))))
  '(flycheck-note ((t nil)))
  '(ivy-posframe-border ((t (:background "#41728e"))))
@@ -547,21 +524,21 @@
  dap-mode
  :defer
 
- :custom (dap-auto-configure-mode t "Automatically configure dap.")
+ :custom
+ (dap-auto-configure-mode t "Automatically configure dap.")
  (dap-auto-configure-features
   '(sessions
     locals breakpoints expressions tooltip)
   "Remove the button panel in the top.")
 
  :config
- ;;; dap for c++
- (require 'dap-lldb) (require 'dap-cpptools) (require 'dap-gdb-lldb)
+ (require 'dap-lldb)
+ (require 'dap-cpptools)
+ (require 'dap-gdb-lldb)
 
  ;;; ask user for executable to debug if not specified explicitly (c++)
  (setq dap-lldb-debugged-program-function
        (lambda () (read-file-name "Select file to debug.")))
-
-
  :init
  (bind-keys
   :map dap-mode-map
@@ -583,6 +560,7 @@
   ("s u" . dap-up-stack-frame)
   ("s d" . dap-down-stack-frame)
   ("s s" . dap-switch-stack-frame)
+  ("h" . dap-hydra)
   ("l" . dap-ui-locals)))
 
 ;; tabs
@@ -614,60 +592,7 @@
    (interactive)
    (evil-window-next 0)))
 
-;; open c++ source and header
-
-(defun open-cpp-pair-files (NEWTAB)
-  (let ((cpp-file nil)
-        (extension nil)
-        (prev-buf (current-buffer))
-        (basename)
-        (cpp-header-extension ".hpp"))
-    (progn
-      (setq cpp-file (read-file-name "input filename: "))
-      (setq extension (url-file-extension cpp-file))
-      (setq basename (file-name-sans-extension cpp-file))
-
-      (if (let* ((normalized-file-path (file-truename cpp-file))
-                 (normalized-directory
-                  (file-name-as-directory
-                   (file-truename "/home/dima/repos/unreal"))))
-            (string-prefix-p
-             normalized-directory normalized-file-path))
-          (setq cpp-header-extension ".h"))
-
-      (cl-block
-       my-func
-       (if (not
-            (or (string= extension cpp-header-extension)
-                (string= extension ".cpp")))
-           (progn
-             (print
-              (format "%s%s" "invalid file extension: " extension))
-             (cl-return-from my-func))
-         (progn
-           (if NEWTAB
-               (progn
-                 (switch-to-buffer prev-buf)
-                 (tab-bar-new-tab))
-             nil)
-           (delete-other-windows)
-           (find-file (format "%s%s" basename ".cpp"))
-           (split-window-right)
-           (other-window 1)
-           (find-file (format "%s%s" basename cpp-header-extension))
-           (other-window 1)))))))
-
-
-(global-set-key
- (kbd "C-c o")
- (lambda ()
-   (interactive)
-   (open-cpp-pair-files nil)))
-(global-set-key
- (kbd "C-c O")
- (lambda ()
-   (interactive)
-   (open-cpp-pair-files t)))
+(load-config "pair-files")
 
 (defun open-config ()
   (interactive)
@@ -676,6 +601,17 @@
    (print
     (find-lisp-object-file-name
      'open-config (symbol-function 'open-config)))))
+
+(defun open-configs ()
+  (interactive)
+  (tab-bar-new-tab)
+  (dired
+   (concat
+    (file-name-directory
+     (find-lisp-object-file-name
+      'open-config (symbol-function 'open-config)))
+    "config")))
+
 (put 'erase-buffer 'disabled nil)
 
 (defun ttp ()
@@ -694,13 +630,20 @@
  (global-set-key (kbd "C-c S") 'vr/isearch-backward))
 
 
-(use-package glsl-mode)
+(use-package
+ glsl-mode
+ :config
+ (add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
+ (add-to-list 'auto-mode-alist '("\\.comp\\'" . glsl-mode))
+ (add-to-list 'auto-mode-alist '("\\.geom\\'" . glsl-mode)))
 
 (use-package company-glsl)
 
 (require 'cc-mode)
 (define-key c++-mode-map (kbd "C-c C-c") nil)
 (define-key c-mode-map (kbd "C-c C-c") nil)
+(define-key c++-mode-map (kbd "C-c i") 'implement-c++-method)
+
 
 (use-package latex-preview-pane)
 
@@ -719,3 +662,6 @@
        '((swiper . ivy-display-function-fallback)
          (counsel-M-x . ivy-posframe-display-at-window-bottom-left)
          (t . ivy-posframe-display))))
+
+(load-config "auto-format-buffer")
+(load-config "implement-c++-method")
