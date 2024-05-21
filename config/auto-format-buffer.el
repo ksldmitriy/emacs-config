@@ -15,5 +15,8 @@
    ((derived-mode-p 'glsl-mode)
     (format-all-buffer 1))
 
+   ((derived-mode-p 'gdscript-mode)
+    (gdscript-format-buffer))
+
    ((derived-mode-p 'cmake-mode)
     (message "cmake mode"))))
