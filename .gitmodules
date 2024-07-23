@@ -1,0 +1,6 @@
+[submodule "github/pair-files-bin"]
+	path = github/pair-files-bin
+	url = https://github.com/ksldmitriy/pair-files-bin.git
+[submodule "github/codeium"]
+	path = github/codeium
+	url = git@github.com:Exafunction/codeium.el.git
