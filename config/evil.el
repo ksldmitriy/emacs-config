@@ -56,6 +56,10 @@
    (lambda ()
      (interactive)
      (open-pair-files t)))
+  ("C-c M-o" .
+   (lambda ()
+     (interactive)
+     (open-pair-files t t)))
 
   :map
   evil-insert-state-map

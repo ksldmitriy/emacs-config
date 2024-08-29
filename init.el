@@ -32,6 +32,16 @@
     (read-only-mode 1)))
 
 
+(defun clear-all-hooks ()
+  (interactive)
+  (mapatoms
+   (lambda (sym)
+     (when (and (boundp sym)
+                (string-match "-hook$" (symbol-name sym)))
+       (set sym nil))))
+  (message "%s" hook-list))
+
+
 (global-set-key
  (kbd "C-x e")
  (lambda ()
@@ -55,8 +65,8 @@
 (load-config "evil")
 
 (setq-default cursor-type 'bar)
-(setq indent-tabs-mode nil)
 (setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)
 
 (autoload 'View-scroll-half-page-forward "view")
 (autoload 'View-scroll-half-page-backward "view")
@@ -377,7 +387,11 @@
   "h"
   'dired-up-directory
   "l"
-  'dired-find-file))
+  'dired-find-file
+  "K"
+  nil
+  "J"
+  nil))
 
 (use-package
  markdown-mode
@@ -417,7 +431,8 @@
 (use-package
  all-the-icons
  :ensure t
- :config (all-the-icons-install-fonts t))
+ :config ;(all-the-icons-install-fonts t)
+ )
 
 (use-package
  doom-modeline
@@ -511,9 +526,21 @@
  visual-fill-column
  :hook (org-mode . efs/org-mode-visual-fill))
 
-(setq initial-buffer-choice "~/.emacs.d/start-page.org")
+;; cli arguments and initial buffer
+(defvar cli-files nil)
+(defun cli-open-file-function ()
+  (setq cli-files (append cli-files (list argi))))
 
-;; ( lsp
+(setq command-line-functions
+      (append command-line-functions (list #'cli-open-file-function)))
+
+(defun choose-initial-buffer ()
+  (let ((start-file (or (car cli-files) "~/.emacs.d/start-page.org")))
+    (funcall-interactively 'find-file start-file)))
+
+(setq initial-buffer-choice #'choose-initial-buffer)
+
+;; lsp
 (use-package
  lsp-mode
  :commands (lsp lsp-deferred)
@@ -522,6 +549,7 @@
  (setq company-lsp-enable-snippet nil)
  (setq lsp-enable-snippet nil)
  (setq lsp-completion-enable-additional-text-edit nil)
+ (setq lsp-restart 'auto-restart)
  :hook
  (c++-mode . lsp)
  (c-mode . lsp)
@@ -673,10 +701,12 @@
  (define-key c++-mode-map (kbd "C-c C-c") nil)
  (define-key c-mode-map (kbd "C-c C-c") nil)
  (define-key c++-mode-map (kbd "C-c i") 'implement-c++-method)
- (setq-default c-basic-offset 4)
+ (setq c-basic-offset 4)
  (add-hook
   'c-mode-common-hook
   (lambda ()
+    ;; (setq indent-tabs-mode nil)
+    ;; (indent-tabs-mode nil)
     (hide-ifdef-mode)
     (setq hide-ifdef-shadow t)
     (hide-ifdefs))))
@@ -710,5 +740,3 @@
 (use-package rustic)
 
 (load-config "pair-files-bin")
-
-(load-config "codeium-setup")

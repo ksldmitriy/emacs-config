@@ -1,8 +1,9 @@
 (defun choose-pair-files (corn-file left-file-out right-file-out)
   (let* ((out-buffer (generate-new-buffer "out-buf"))
          (exit-code
-          (call-process "/home/dima/repos/pair-files/bin/pair-files"
-                        nil out-buffer t corn-file)))
+          (call-process
+           "~/.emacs.d/github/pair-files-bin/bin/pair-files"
+           nil out-buffer t corn-file)))
 
     (cl-block
      func-body (set-buffer out-buffer)
@@ -28,7 +29,7 @@
     (if (get-buffer out-buffer)
         (kill-buffer out-buffer))))
 
-(defun open-pair-files (newtab)
+(defun open-pair-files (newtab &optional prev-tab)
   (interactive)
   (let (corn-file
         left-file
@@ -47,7 +48,7 @@
     (choose-pair-files corn-file 'left-file 'right-file)
 
     (if newtab
-        (tab-bar-new-tab))
+        (tab-bar-new-tab (if prev-tab 0 1)))
     (delete-other-windows)
 
     (find-file left-file)

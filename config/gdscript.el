@@ -4,7 +4,7 @@
  :config
  (setq gdscript-use-tab-indents nil)
  (setq gdscript-indent-offset 4)
- (add-hook 'gdscript-mode-hook (lambda () (lsp-mode)))
+ (add-hook 'gdscript-mode-hook 'lsp-mode)
 
  ;; redefine format func
  (defun gdscript-comint-gdformat--run (arguments)
@@ -42,4 +42,19 @@ When run it will kill existing process if one exists."
          (set-process-sentinel
           (get-buffer-process buffer)
           'gdscript-comint-gdformat--sentinel)
-         buffer)))))
+         buffer))))
+
+ (defun gdscript-comint-gdformat--sentinel (process event)
+   "Display result of formatting if gdformat PROCESS exited abnormal EVENT."
+   (when (string-match "exited abnormally" event)
+     (message (format "gdformat failed: %s" (string-trim event))))))
+
+
+
+(defun lsp--gdscript-ignore-warnings (original-function &rest args)
+  (if (not
+       (and (string= "Unknown notification: %s" (nth 0 args))
+            (string= (nth 1 args) "gdscript/capabilities")))
+      (apply original-function args)))
+
+(advice-add #'lsp-warn :around #'lsp--gdscript-ignore-warnings)
