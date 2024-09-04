@@ -24,6 +24,11 @@
 
   :map
   evil-normal-state-map
+  ("C-c t" .
+   (lambda ()
+     (interactive)
+     (message "%s" (codeium-completion-at-point))
+     (print (codeium-completion-at-point))))
   ("i" .
    (lambda ()
      (interactive)
@@ -43,9 +48,26 @@
   ("J" . 'tab-previous)
   ("K" . 'tab-next)
   ("s" . 'save-all-buffers)
+  ("C-c o" .
+   (lambda ()
+     (interactive)
+     (open-pair-files nil)))
+  ("C-c O" .
+   (lambda ()
+     (interactive)
+     (open-pair-files t)))
+  ("C-c M-o" .
+   (lambda ()
+     (interactive)
+     (open-pair-files t t)))
 
   :map
   evil-insert-state-map
+  ("C-c t" .
+   (lambda ()
+     (interactive)
+     (message "%s" (codeium-completion-at-point))
+     (print (codeium-completion-at-point))))
   ("C-SPC" . "_")
   ("C-g" . 'evil-keyboard-quit)
   ("C-f" . 'evil-keyboard-quit)
