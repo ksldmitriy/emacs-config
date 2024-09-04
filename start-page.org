@@ -1,4 +1,5 @@
 * Code
+- [[file:~/repos/cancer/][cancer]]
 - work
   - [[file:~/repos/work/lofi-rain/][lofi rain]]
   - [[file:~/repos/work/data-structures/][data structures]]
@@ -7,13 +8,19 @@
 - [[file:~/repos/dyn-link/][dyn link]]
 - [[file:~/repos/test/][test]]
 - [[file:~/repos/python/][python]]
-   
-* /Flex/
-- [[file:~/Documents/latina/][latin]]
-- [[file:~/repos/flex/][flex cpp]]
-   
+
+* dict thee
+
+     Note: Thou is now sometimes used by the Friends, or Quakers,
+           in familiar discourse, though most of them corruptly
+           say thee instead of thou.
+           [1913 Webster]
+* Shit
+- quod est necessarium est licitum
+
 * Emacs goods
 - learn ivy!!! (f1-m in C-x C-f)
+- lsp-treemacs-errors-list
 - solair
 - golden-ratio
 - auto-insert-(mode)
@@ -27,6 +34,8 @@
 * Tasks
 - [ ] ~FIND FUCKING WORK LAZY PIECE OF SHIT!!!~ [[file:~/Documents/work.org][tasks]]
 - [ ] userver
+- [ ] utopia - thomas more
+- [ ] I built a car combat game with physics! - YouTube
 - [ ] return money for education to parents
 - [ ] buy brown craft paper (numberphile) https://bru.store/eko-kraft-bumaga-a3-70-upakovka-500
 - [ ] spinning artwork (rotating circle piece of paper)

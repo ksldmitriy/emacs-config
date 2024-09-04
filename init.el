@@ -33,16 +33,16 @@
     (read-only-mode 1)))
 
 
-(global-set-key
- (kbd "C-x e")
- (lambda ()
-   (interactive)
-   (save-buffer)
-   (if (region-active-p)
-       (let ((start (region-beginning))
-             (end (region-end)))
-         (eval-region start end))
-     (eval-buffer nil nil nil nil t))))
+(defun elisp-save-and-run ()
+  (interactive)
+  (save-buffer)
+  (if (region-active-p)
+      (let ((start (region-beginning))
+            (end (region-end)))
+        (eval-region start end))
+    (eval-buffer nil nil nil nil t)))
+
+(define-key emacs-lisp-mode-map (kbd "C-x e") 'elisp-save-and-run)
 
 (use-package undo-fu)
 
@@ -96,10 +96,11 @@
  '(menu-bar-mode nil)
  '(org-startup-folded nil)
  '(package-selected-packages
-   '(indent-guide indent-control indent-tools add-node-modules-path gdscript-mode ytdl lua-mode gh-md cmake-font-lock cmake-mode format-all vterm js-format xml-format flycheck-rust rust-mode ivy-posframe-mode ivy-posframe command-log-mode twilight-anti-bright-theme twilight-theme spacemacs-theme Cmake-mode yaml-mode company-glsl glsl-mode :init visual-regexp-steroids visual-regexp typescript-mode nerd-icons-ibuffer jit-spell spell-fu programmer-dvorak dap-mode browse-kill-ring lsp-origami lsp-ivy lsp-ui lsp-mode visual-fill-column org-bullets doom-themes highlight-indent-guides ivy-rich which-key whick-key rainbow-delimiters ranbow-delimiters all-the-icons doom-modeline ivy--actions-list ivy beacon no-littering rainbow-mode cl-format yafolding vdiff markdown-mode golden-ratio-scroll-screen origami clang-format use-package undo-fu move-text modern-cpp-font-lock ggtags flycheck-color-mode-line evil-collection company cmake-ide))
+   '(rustic cargo indent-guide indent-control indent-tools add-node-modules-path gdscript-mode ytdl lua-mode gh-md cmake-font-lock cmake-mode format-all vterm js-format xml-format ivy-posframe-mode ivy-posframe command-log-mode twilight-anti-bright-theme twilight-theme spacemacs-theme Cmake-mode yaml-mode company-glsl glsl-mode :init visual-regexp-steroids visual-regexp typescript-mode nerd-icons-ibuffer jit-spell spell-fu programmer-dvorak dap-mode browse-kill-ring lsp-origami lsp-ivy lsp-ui lsp-mode visual-fill-column org-bullets doom-themes highlight-indent-guides ivy-rich which-key whick-key rainbow-delimiters ranbow-delimiters all-the-icons doom-modeline ivy--actions-list ivy beacon no-littering rainbow-mode cl-format yafolding vdiff markdown-mode golden-ratio-scroll-screen origami clang-format use-package undo-fu move-text modern-cpp-font-lock ggtags flycheck-color-mode-line evil-collection company cmake-ide))
  '(suggest-key-bindings nil)
  '(tab-bar-mode t)
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(vc-display-status nil))
 
 (setq custom--inhibit-theme-enable nil)
 
@@ -108,7 +109,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Source Code Pro" :foundry "ADBO" :slant normal :weight medium :height 105 :width normal))))
+ '(default ((t (:family "Source Code Pro" :foundry "ADBO" :slant normal :weight medium :height 135 :width normal))))
  '(button ((t (:inherit link :underline nil))))
  '(flycheck-note ((t nil)))
  '(ivy-posframe-border ((t (:background "#41728e"))))
@@ -224,10 +225,8 @@
 
 (global-set-key (kbd "C-s") 'swiper)
 
-(use-package
- all-the-icons
- :ensure t
- :config (all-the-icons-install-fonts t))
+(ignore-errors
+  (use-package all-the-icons :ensure t :config))
 
 (use-package
  doom-modeline
@@ -322,7 +321,7 @@
 
 (setq initial-buffer-choice "~/.emacs.d/start-page.org")
 
-;; ( lsp
+;; lsp
 (use-package
  lsp-mode
  :commands (lsp lsp-deferred)
@@ -331,10 +330,12 @@
  (setq company-lsp-enable-snippet nil)
  (setq lsp-enable-snippet nil)
  (setq lsp-completion-enable-additional-text-edit nil)
+ (setq lsp-lens-auto-enable nil)
  :hook
  (c++-mode . lsp)
  (c-mode . lsp)
  (csharp-mode . lsp)
+ (rust-mode . lsp)
  (lsp-mode . lsp-enable-which-key-integration))
 
 (use-package
@@ -460,14 +461,6 @@
 
 (put 'erase-buffer 'disabled nil)
 
-(defun ttp ()
-  (interactive)
-  (let ((ttp-path))
-    (setq ttp-path
-          (s-replace
-           "\n" "" (f-read-text "~/scripts/data/ttp-dir" 'utf-8)))
-    (dired (concat ttp-path "/src"))))
-
 (use-package
  visual-regexp-steroids
  :config
@@ -503,6 +496,7 @@
 
 (use-package
  ivy-posframe
+ :ensure t
  :config (ivy-posframe-mode 1)
  (setq ivy-posframe-display-functions-alist
        '((swiper . ivy-display-function-fallback)
@@ -513,5 +507,7 @@
 (load-config "implement-c++-method")
 
 (use-package format-all)
+
+(use-package rustic :bind (("C-x e" . rustic-cargo-run)))
 
 (load-config "gdscript")
