@@ -60,6 +60,8 @@
    (lambda ()
      (interactive)
      (open-pair-files t t)))
+  ("U" . 'undo-tree-visualize)
+  ("M" . 'evil-goto-mark)
 
   :map
   evil-insert-state-map
@@ -75,7 +77,7 @@
 
  :init
  (setq evil-want-keybinding nil)
- (setq evil-undo-system 'undo-fu)
+ (setq evil-undo-system 'undo-tree)
 
  :config
  (evil-collection-init)

@@ -19,4 +19,10 @@
     (gdscript-format-buffer))
 
    ((derived-mode-p 'cmake-mode)
-    (message "cmake mode"))))
+    (message "cmake mode"))
+
+   ((derived-mode-p 'html-mode)
+    (format-all-buffer))
+
+   ((derived-mode-p 'sql-mode)
+    (format-all-buffer))))

@@ -10,8 +10,6 @@
 
 (global-unset-key (kbd "C-x C-c"))
 
-(message "file: %s" load-file-name)
-
 (package-initialize)
 (setq use-package-always-ensure t)
 
@@ -52,8 +50,6 @@
              (end (region-end)))
          (eval-region start end))
      (eval-buffer nil nil nil nil t))))
-
-(use-package undo-fu)
 
 (global-set-key (kbd "M-d") nil)
 
@@ -200,14 +196,104 @@
      "19a2c0b92a6aa1580f1be2deb7b8a8e3a4857b6c6ccf522d00547878837267e7"
      default))
  '(display-line-numbers-width 0)
+ '(evil-undo-system 'undo-tree)
  '(extended-command-suggest-shorter nil)
+ '(format-all-default-formatters
+   '(("Assembly" asmfmt)
+     ("ATS" atsfmt)
+     ("Bazel" buildifier)
+     ("BibTeX" emacs-bibtex)
+     ("C" clang-format)
+     ("C#" csharpier)
+     ("C++" clang-format)
+     ("Cabal Config" cabal-fmt)
+     ("Clojure" zprint)
+     ("CMake" cmake-format)
+     ("Crystal" crystal)
+     ("CSS" prettier)
+     ("Cuda" clang-format)
+     ("D" dfmt)
+     ("Dart" dart-format)
+     ("Dhall" dhall)
+     ("Dockerfile" dockfmt)
+     ("Elixir" mix-format)
+     ("Elm" elm-format)
+     ("Emacs Lisp" emacs-lisp)
+     ("Erlang" efmt)
+     ("F#" fantomas)
+     ("Fish" fish-indent)
+     ("Fortran Free Form" fprettify)
+     ("GLSL" clang-format)
+     ("Go" gofmt)
+     ("GraphQL" prettier)
+     ("Haskell" brittany)
+     ("HCL" hclfmt)
+     ("HLSL" clang-format)
+     ("HTML" html-tidy-configured)
+     ("HTML+EEX" mix-format)
+     ("HTML+ERB" erb-format)
+     ("Hy" emacs-hy)
+     ("Java" google-java-format)
+     ("JavaScript" prettier)
+     ("JSON" prettier)
+     ("JSON5" prettier)
+     ("Jsonnet" jsonnetfmt)
+     ("JSX" prettier)
+     ("Kotlin" ktlint)
+     ("LaTeX" latexindent)
+     ("Less" prettier)
+     ("Literate Haskell" brittany)
+     ("Lua" lua-fmt)
+     ("Markdown" prettier)
+     ("Meson" muon-fmt)
+     ("Nix" nixpkgs-fmt)
+     ("Objective-C" clang-format)
+     ("OCaml" ocp-indent)
+     ("Perl" perltidy)
+     ("PHP" prettier)
+     ("Protocol Buffer" clang-format)
+     ("PureScript" purty)
+     ("Python" black)
+     ("R" styler)
+     ("Reason" bsrefmt)
+     ("ReScript" rescript)
+     ("Ruby" rufo)
+     ("Rust" rustfmt)
+     ("Scala" scalafmt)
+     ("SCSS" prettier)
+     ("Shell" shfmt)
+     ("Solidity" prettier)
+     ("SQL" sqlformat)
+     ("Svelte" prettier)
+     ("Swift" swiftformat)
+     ("Terraform" terraform-fmt)
+     ("TOML" prettier)
+     ("TSX" prettier)
+     ("TypeScript" prettier)
+     ("V" v-fmt)
+     ("Verilog" istyle-verilog)
+     ("Vue" prettier)
+     ("XML" html-tidy)
+     ("YAML" prettier)
+     ("Zig" zig)
+     ("_Angular" prettier)
+     ("_AZSL" clang-format)
+     ("_Beancount" bean-format)
+     ("_Caddyfile" caddy-fmt)
+     ("_Flow" prettier)
+     ("_Gleam" gleam)
+     ("_Ledger" ledger-mode)
+     ("_Nginx" nginxfmt)
+     ("_Snakemake" snakefmt)))
  '(ivy-initial-inputs-alist nil)
  '(ivy-posframe-border-width 2)
  '(lsp-enable-suggest-server-download nil)
  '(menu-bar-mode nil)
  '(org-startup-folded nil)
  '(package-selected-packages
-   '(ivy-posframe
+   '(undo-tree
+     db-pg
+     ivy-posframe
      rustic
      markdownfmt
      markdown-preview-mode
@@ -275,7 +361,6 @@
      origami
      clang-format
      use-package
-     undo-fu
      move-text
      modern-cpp-font-lock
      ggtags
@@ -549,7 +634,6 @@
  (setq company-lsp-enable-snippet nil)
  (setq lsp-enable-snippet nil)
  (setq lsp-completion-enable-additional-text-edit nil)
- (setq lsp-restart 'auto-restart)
  :hook
  (c++-mode . lsp)
  (c-mode . lsp)
@@ -702,14 +786,16 @@
  (define-key c-mode-map (kbd "C-c C-c") nil)
  (define-key c++-mode-map (kbd "C-c i") 'implement-c++-method)
  (setq c-basic-offset 4)
- (add-hook
-  'c-mode-common-hook
-  (lambda ()
-    ;; (setq indent-tabs-mode nil)
-    ;; (indent-tabs-mode nil)
-    (hide-ifdef-mode)
-    (setq hide-ifdef-shadow t)
-    (hide-ifdefs))))
+ ;; (add-hook
+ ;;  'c-mode-common-hook
+ ;;  (lambda ()
+ ;;    ;; (setq indent-tabs-mode nil)
+ ;;    ;; (indent-tabs-mode nil)
+ ;;    (hide-ifdef-mode)
+ ;;    (setq hide-ifdef-shadow t)
+ ;;    (hide-ifdefs)))
+ )
+
 
 (use-package latex-preview-pane)
 
@@ -729,11 +815,39 @@
          (counsel-M-x . ivy-posframe-display-at-window-bottom-left)
          (t . ivy-posframe-display))))
 
+(use-package
+ undo-tree
+ :config
+ (setq undo-tree-history-directory-alist
+       '(("." . "~/.emacs.d/undo")))
+ (global-undo-tree-mode))
+
 (load-config "auto-format-buffer")
 
 (load-config "implement-c++-method")
 
-(use-package format-all)
+(use-package
+ format-all
+ :config
+ (define-format-all-formatter
+  html-tidy-configured (:executable "tidy")
+  (:install
+   (macos "brew install tidy-html5") (windows "scoop install tidy"))
+  (:languages "HTML") (:features)
+  (:format
+   (format-all--buffer-hard
+    '(0 1)
+    nil
+    nil
+    executable
+    "-config"
+    "~/.config/tidy/config"
+    "-q"
+    "--tidy-mark"
+    "no")))
+
+ (setq-default format-all-formatters
+               '(("HTML" (html-tidy-configured)))))
 
 (load-config "gdscript")
 

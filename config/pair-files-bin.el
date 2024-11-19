@@ -29,26 +29,30 @@
     (if (get-buffer out-buffer)
         (kill-buffer out-buffer))))
 
-(defun open-pair-files (newtab &optional prev-tab)
+(defun open-pair-files (newtab &optional prev-tab corn-file)
   (interactive)
-  (let (corn-file
-        left-file
+  (let (left-file
         right-file)
 
-    (setq corn-file
-          (read-file-name "input filename: "
-                          nil nil nil nil ;
-                          (lambda (file)
-                            (or (file-directory-p file)
-                                (string-suffix-p ".cpp" file)
-                                (string-suffix-p ".c" file)
-                                (string-suffix-p ".hpp" file)
-                                (string-suffix-p ".h" file)))))
+
+    (if (not corn-file)
+        (setq corn-file
+              (read-file-name "input filename: "
+                              nil nil nil nil ;
+                              (lambda (file)
+                                (or (file-directory-p file)
+                                    (string-suffix-p ".cpp" file)
+                                    (string-suffix-p ".c" file)
+                                    (string-suffix-p ".hpp" file)
+                                    (string-suffix-p ".h" file))))))
 
     (choose-pair-files corn-file 'left-file 'right-file)
 
     (if newtab
-        (tab-bar-new-tab (if prev-tab 0 1)))
+        (tab-bar-new-tab
+         (if prev-tab
+             0
+           1)))
     (delete-other-windows)
 
     (find-file left-file)
