@@ -14,6 +14,8 @@
 
   :map
   evil-motion-state-map
+  ("<remap> <evil-next-line>" . 'evil-next-visual-line)
+  ("<remap> <evil-previous-line>" . 'evil-previous-visual-line)
   ("g t" . nil)
   ("g T" . nil)
   ("J" . 'tab-previous)
@@ -24,6 +26,9 @@
 
   :map
   evil-normal-state-map
+  ("<remap> <evil-next-line>" . 'evil-next-visual-line)
+  ("<remap> <evil-previous-line>" . 'evil-previous-visual-line)
+
   ("C-c t" .
    (lambda ()
      (interactive)
@@ -81,6 +86,7 @@
 
  :config
  (evil-collection-init)
+ (setq-default evil-cross-lines t)
  (evil-mode 1))
 
 (use-package

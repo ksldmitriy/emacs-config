@@ -58,6 +58,10 @@
    (expand-file-name (concat (concat "config/" filename) ".el")
                      user-emacs-directory)))
 
+(use-package toml)
+
+(load-config "local")
+
 (load-config "evil")
 
 (setq-default cursor-type 'bar)
@@ -90,6 +94,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(abbrev-suggest-hint-threshold 0)
+ '(css-indent-offset 2)
  '(custom-enabled-themes '(doom-tomorrow-night))
  '(custom-safe-themes
    '("8aeb4dbed3dd5c639adcc574eb2e5698b08545dd3d1794ed7e9b4f2b8eb289e4"
@@ -291,7 +296,8 @@
  '(menu-bar-mode nil)
  '(org-startup-folded nil)
  '(package-selected-packages
-   '(undo-tree
+   '(toml
+     undo-tree
      db-pg
      ivy-posframe
      rustic
@@ -830,10 +836,10 @@
  format-all
  :config
  (define-format-all-formatter
-  html-tidy-configured (:executable "tidy")
-  (:install
-   (macos "brew install tidy-html5") (windows "scoop install tidy"))
-  (:languages "HTML") (:features)
+  html-tidy-configured
+  (:executable "tidy")
+  (:languages "HTML")
+  (:features)
   (:format
    (format-all--buffer-hard
     '(0 1)
@@ -847,7 +853,8 @@
     "no")))
 
  (setq-default format-all-formatters
-               '(("HTML" (html-tidy-configured)))))
+               '(("HTML" (html-tidy-configured))
+                 ("SQL" pgformatter))))
 
 (load-config "gdscript")
 
