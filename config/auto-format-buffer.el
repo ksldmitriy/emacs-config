@@ -24,6 +24,11 @@
    ((derived-mode-p 'html-mode)
     (format-all-buffer))
 
+   ((derived-mode-p 'css-mode)
+    (format-all-buffer))
 
    ((derived-mode-p 'sql-mode)
+    (format-all-buffer))
+
+   ((derived-mode-p 'python-mode)
     (format-all-buffer))))

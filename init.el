@@ -296,7 +296,11 @@
  '(menu-bar-mode nil)
  '(org-startup-folded nil)
  '(package-selected-packages
-   '(toml
+   '(company-qml
+     qml-mode
+     lsp-latex
+     acutex
+     toml
      undo-tree
      db-pg
      ivy-posframe
@@ -802,9 +806,6 @@
  ;;    (hide-ifdefs)))
  )
 
-
-(use-package latex-preview-pane)
-
 (setq suggest-key-bindings nil)
 (setq extended-command-suggest-shorter nil)
 
@@ -854,6 +855,7 @@
 
  (setq-default format-all-formatters
                '(("HTML" (html-tidy-configured))
+                 ("CSS" prettier)
                  ("SQL" pgformatter))))
 
 (load-config "gdscript")
@@ -861,3 +863,5 @@
 (use-package rustic)
 
 (load-config "pair-files-bin")
+
+(load-config "latex")

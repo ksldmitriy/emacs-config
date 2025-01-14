@@ -4,7 +4,7 @@
  :config
  (setq gdscript-use-tab-indents nil)
  (setq gdscript-indent-offset 4)
- (add-hook 'gdscript-mode-hook 'lsp-mode)
+ ;;(add-hook 'gdscript-mode-hook 'lsp-mode)
 
  ;; redefine format func
  (defun gdscript-comint-gdformat--run (arguments)
