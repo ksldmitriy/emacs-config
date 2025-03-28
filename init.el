@@ -5,7 +5,7 @@
 
 (add-to-list 'load-path "~/.emacs.d/chat-gpt/")
 
-(setq read-process-output-max (* 4 (* 1024 1024))) ;; 1mb
+(setq read-process-output-max (* 12 (* 1024 1024)))
 (setq gc-cons-threshold 140000000)
 
 (global-unset-key (kbd "C-x C-c"))
@@ -21,6 +21,8 @@
   (require 'use-package))
 
 (use-package no-littering)
+
+(define-key key-translation-map (kbd "S-SPC") (kbd "_"))
 
 (defun clear-messages-buffer ()
   (interactive)
@@ -67,6 +69,12 @@
 (setq-default cursor-type 'bar)
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
+
+(add-hook
+ 'js-mode-hook
+ (lambda ()
+   (setq tab-width 2)
+   (setq js-indent-level 2)))
 
 (autoload 'View-scroll-half-page-forward "view")
 (autoload 'View-scroll-half-page-backward "view")
@@ -290,6 +298,7 @@
      ("_Ledger" ledger-mode)
      ("_Nginx" nginxfmt)
      ("_Snakemake" snakefmt)))
+ '(global-display-line-numbers-mode t)
  '(ivy-initial-inputs-alist nil)
  '(ivy-posframe-border-width 2)
  '(lsp-enable-suggest-server-download nil)
@@ -390,12 +399,24 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default
-   ((((class color) (min-colors 257))
-     (:background "#1d1f21" :foreground "#c5c8c6"))
-    (((class color) (min-colors 256))
-     (:background nil :foreground "#c5c5c5"))
-    (((class color) (min-colors 16))
-     (:background nil :foreground "white"))))
+   ((t
+     (:inherit
+      nil
+      :extend nil
+      :stipple nil
+      :background "#1d1f21"
+      :foreground "#c5c8c6"
+      :inverse-video nil
+      :box nil
+      :strike-through nil
+      :overline nil
+      :underline nil
+      :slant normal
+      :weight medium
+      :height 108
+      :width normal
+      :foundry "ADBO"
+      :family "Source Code Pro"))))
  '(button ((t (:inherit link :underline nil))))
  '(flycheck-note ((t nil)))
  '(ivy-posframe ((t (:background "#111214"))))
@@ -438,7 +459,9 @@
  :init
  (setq company-idle-delay 0)
  (setq company-minimum-prefix-length 0)
- (add-hook 'after-init-hook 'global-company-mode))
+ (add-hook 'after-init-hook 'global-company-mode)
+
+ :bind (:map company-active-map ("<tab>" . company-complete-common)))
 
 (setq company-clang-insert-arguments nil)
 (setq company-tooltip-align-annotations t)
@@ -644,6 +667,7 @@
  (setq company-lsp-enable-snippet nil)
  (setq lsp-enable-snippet nil)
  (setq lsp-completion-enable-additional-text-edit nil)
+ (setq lsp-clients-clangd-args '("-j=8" "-background-index"))
  :hook
  (c++-mode . lsp)
  (c-mode . lsp)
@@ -839,6 +863,7 @@
  (define-format-all-formatter
   html-tidy-configured
   (:executable "tidy")
+  (:install)
   (:languages "HTML")
   (:features)
   (:format
@@ -850,13 +875,15 @@
     "-config"
     "~/.config/tidy/config"
     "-q"
+    "-ashtml"
     "--tidy-mark"
     "no")))
 
  (setq-default format-all-formatters
                '(("HTML" (html-tidy-configured))
                  ("CSS" prettier)
-                 ("SQL" pgformatter))))
+                 ("SQL" pgformatter)
+                 ("Python" black))))
 
 (load-config "gdscript")
 
@@ -865,3 +892,12 @@
 (load-config "pair-files-bin")
 
 (load-config "latex")
+
+(use-package
+ vterm
+ :hook
+ (vterm-mode
+  .
+  (lambda ()
+    (display-line-numbers-mode -1)
+    (company-mode -1))))

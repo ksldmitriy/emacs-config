@@ -27,6 +27,9 @@
    ((derived-mode-p 'css-mode)
     (format-all-buffer))
 
+   ((derived-mode-p 'js-mode)
+    (format-all-buffer))
+
    ((derived-mode-p 'sql-mode)
     (format-all-buffer))
 

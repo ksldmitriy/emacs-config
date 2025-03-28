@@ -75,7 +75,6 @@
      (interactive)
      (message "%s" (codeium-completion-at-point))
      (print (codeium-completion-at-point))))
-  ("C-SPC" . "_")
   ("C-g" . 'evil-keyboard-quit)
   ("C-f" . 'evil-keyboard-quit)
   ("C-j" . 'evil-keyboard-quit))
